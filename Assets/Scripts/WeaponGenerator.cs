@@ -14,17 +14,17 @@ public class WeaponGenerator : MonoBehaviour
 
             var generatedDamage = Random.Range(randomWeaponData.minBaseDamage, randomWeaponData.maxBaseDamage + 1);
             
-            var possibleStatDatas = randomWeaponData.possibleStats.ToList();
-            var generatedStats = new List<Stat>(randomWeaponData.statCount);
+            var possibleStatDatas = randomWeaponData.possibleStatModifiers.ToList();
+            var generatedStats = new List<StatModifier>(randomWeaponData.statCount);
 
             for (var i = 0; i < randomWeaponData.statCount; i++)
             {
                 var randomStatData = possibleStatDatas[Random.Range(0, possibleStatDatas.Count)];
                 possibleStatDatas.Remove(randomStatData);
 
-                var generatedStat = new Stat(
+                var generatedStat = new StatModifier(
                     randomStatData.statType, 
-                    randomStatData.statModifyType, 
+                    randomStatData.statModifierType, 
                     Random.Range(randomStatData.minValue, randomStatData.maxValue + 1)
                 );
 

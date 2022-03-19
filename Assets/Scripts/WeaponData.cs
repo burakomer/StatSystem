@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponData", menuName = "RIG/WeaponData")]
+[CreateAssetMenu(fileName = "WeaponData", menuName = "RIG/Item/WeaponData")]
 public class WeaponData : ScriptableObject 
 {
     [Header("Settings")]
@@ -13,5 +13,5 @@ public class WeaponData : ScriptableObject
     public int maxBaseDamage;
 
     [Space]
-    public List<StatData> possibleStats;
+    public List<StatModifierData> possibleStatModifiers;
 }

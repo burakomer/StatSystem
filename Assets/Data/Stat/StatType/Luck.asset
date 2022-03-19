@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 259940cfd33b74ed791a480f7a9d204e, type: 3}
-  m_Name: LegendaryCritDamage
+  m_Script: {fileID: 11500000, guid: 149c9853e79774498bf3975a0144e538, type: 3}
+  m_Name: Luck
   m_EditorClassIdentifier: 
-  statType: 6
-  statModifyType: 0
-  minValue: 75
-  maxValue: 150
+  displayName: LUC

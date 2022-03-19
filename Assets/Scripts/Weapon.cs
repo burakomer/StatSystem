@@ -5,14 +5,14 @@ using System.Linq;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private int _damage;
-    [SerializeField] private List<Stat> _stats;
+    [SerializeField] private List<StatModifier> _statModifiers;
 
-    public void Initialize(int damage, List<Stat> stats)
+    public void Initialize(int damage, List<StatModifier> statModifiers)
     {
         _damage = damage;
-        _stats = stats;
+        _statModifiers = statModifiers;
 
-        var statsText = _stats
+        var statsText = _statModifiers
             .Select(stat => stat.Description)
             .Aggregate((previous, next) => $"{previous}, {next}");
 

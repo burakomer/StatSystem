@@ -16,8 +16,7 @@ MonoBehaviour:
   statCount: 3
   minBaseDamage: 800
   maxBaseDamage: 1200
-  possibleStats:
-  - {fileID: 11400000, guid: 8fcd2b525a8a24c3ba2adfa4b14507f4, type: 2}
-  - {fileID: 11400000, guid: c7244e2969233450e86e4a292d2dab5e, type: 2}
-  - {fileID: 11400000, guid: 11665ee88826d479ea3af60c2551436b, type: 2}
-  - {fileID: 11400000, guid: 6ce8445e77aca4b27bb53d544a79dacd, type: 2}
+  possibleStatModifiers:
+  - {fileID: 11400000, guid: d0973f4e08f9347e7bce8006714bb4a1, type: 2}
+  - {fileID: 11400000, guid: afad96454913d473d8ce19e3924a23d3, type: 2}
+  - {fileID: 11400000, guid: 79d5af85d7b844e289c733df32a5822a, type: 2}

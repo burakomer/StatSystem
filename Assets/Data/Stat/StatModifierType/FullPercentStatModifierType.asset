@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 259940cfd33b74ed791a480f7a9d204e, type: 3}
-  m_Name: LegendaryCritChance
+  m_Script: {fileID: 11500000, guid: e17659e58b67b493da6a708acd2b818f, type: 3}
+  m_Name: FullPercentStatModifierType
   m_EditorClassIdentifier: 
-  statType: 5
-  statModifyType: 0
-  minValue: 6
-  maxValue: 10
+  order: 99999
+  prefix: '%'
