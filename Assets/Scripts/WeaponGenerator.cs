@@ -4,32 +4,19 @@ using UnityEngine;
 
 public class WeaponGenerator : MonoBehaviour
 {
-    [SerializeField] private List<WeaponData> _weaponDatas;
+    [SerializeField] private List<WeaponData> _weaponData;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            var randomWeaponData = _weaponDatas[Random.Range(0, _weaponDatas.Count)];
-
-            var generatedDamage = Random.Range(randomWeaponData.minBaseDamage, randomWeaponData.maxBaseDamage + 1);
+            var randomWeaponData = _weaponData[Random.Range(0, _weaponData.Count)];
             
-            var possibleStatDatas = randomWeaponData.possibleStatModifiers.ToList();
-            var generatedStats = new List<StatModifier>(randomWeaponData.statCount);
-
-            for (var i = 0; i < randomWeaponData.statCount; i++)
-            {
-                var randomStatData = possibleStatDatas[Random.Range(0, possibleStatDatas.Count)];
-                possibleStatDatas.Remove(randomStatData);
-
-                var generatedStat = new StatModifier(
-                    randomStatData.statType, 
-                    randomStatData.statModifierType, 
-                    Random.Range(randomStatData.minValue, randomStatData.maxValue + 1)
+            var generatedDamage = StatModifier.GenerateFromData(randomWeaponData.baseDamage);
+            var generatedStats = StatModifier.GenerateRandomListFromData(
+                randomWeaponData.statCount, 
+                randomWeaponData.possibleStatModifiers.ToList()
                 );
-
-                generatedStats.Add(generatedStat);
-            }
 
             var weaponGameObject = new GameObject(randomWeaponData.itemName);
             var weapon = weaponGameObject.AddComponent<Weapon>();

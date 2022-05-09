@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Sparkling Wand
   statCount: 3
+  baseDamage:
+    statType: {fileID: 11400000, guid: bc31cc394a73e7546a74d9ef2f872f70, type: 2}
+    statModifierType: {fileID: 11400000, guid: 48c0a32148af34b75966c03b863aef89, type: 2}
+    minValue: 600
+    maxValue: 1000
   minBaseDamage: 600
   maxBaseDamage: 1000
   possibleStatModifiers:

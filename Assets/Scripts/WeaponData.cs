@@ -9,8 +9,7 @@ public class WeaponData : ScriptableObject
     public int statCount;
 
     [Header("Damage")]
-    public int minBaseDamage;
-    public int maxBaseDamage;
+    public StatModifierDataStruct baseDamage;
 
     [Space]
     public List<StatModifierData> possibleStatModifiers;
