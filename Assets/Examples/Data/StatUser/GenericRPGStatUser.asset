@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92dc8c3088a4a9596a1b0ef84bb37cb, type: 3}
+  m_Name: GenericRPGStatUser
+  m_EditorClassIdentifier: 
+  statTypes:
+  - {fileID: 11400000, guid: bc31cc394a73e7546a74d9ef2f872f70, type: 2}
+  - {fileID: 11400000, guid: 2767edeb50f67411eb4808a6904bad06, type: 2}
+  - {fileID: 11400000, guid: ed5348b5207724b77921db00bea4664b, type: 2}
+  - {fileID: 11400000, guid: 7652c588ea63f4d0c93ca219b25120de, type: 2}
+  - {fileID: 11400000, guid: 6bb8963ced36f465c80d541555773b64, type: 2}
+  - {fileID: 11400000, guid: 6ade7c7b0175341e8842bb0f2bd802d1, type: 2}
+  - {fileID: 11400000, guid: d33abac25166747f1a62e8f6864e655a, type: 2}
