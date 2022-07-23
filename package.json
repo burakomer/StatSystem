@@ -1,6 +1,6 @@
 {
   "name": "com.pandaengine.statsystem",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Stat System",
   "description": "This is a stat system usually found in RPG games.",
   "unity": "2021.3",
@@ -8,7 +8,7 @@
     {
       "displayName": "Examples",
       "description": "Contains examples for the usage of Stat System.",
-      "path": "Examples"
+      "path": "Samples~/Examples"
     }
   ],
   "keywords": [
