@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 [Serializable]
 public class StatModifier
@@ -15,7 +15,7 @@ public class StatModifier
     public string Description => $"{StatType.displayName} {ValueDescription}";
     public string ValueDescription => $"+{Value:F}{StatModifierType.prefix}";
 
-    public StatModifier(StatType statType, StatModifierType statModifyType, int value)
+    public StatModifier(StatType statType, StatModifierType statModifyType, float value)
     {
         StatType = statType;
         StatModifierType = statModifyType;
@@ -28,23 +28,23 @@ public class StatModifier
         finalValue = StatModifierType.ModifyValue(finalValue, Value);
     }
 
-    public static StatModifier GenerateFromData(IStatModifierData randomStatData) =>
+    public static StatModifier GenerateFromData(IStatModifierData randomStatData, Random random) =>
         new(
             randomStatData.StatType,
             randomStatData.StatModifierType,
-            Random.Range(randomStatData.MinValue, randomStatData.MaxValue + 1)
+            Mathf.Lerp(randomStatData.MinValue, randomStatData.MaxValue, (float) random.NextDouble())
         );
 
-    public static List<StatModifier> GenerateRandomListFromData(int statCount, IList<StatModifierData> possibleStatData)
+    public static List<StatModifier> GenerateRandomListFromData(int statCount, IList<StatModifierData> possibleStatData, Random random)
     {
         var generatedStats = new List<StatModifier>(statCount);
 
         for (var i = 0; i < statCount; i++)
         {
-            var randomStatData = possibleStatData[Random.Range(0, possibleStatData.Count)];
+            var randomStatData = possibleStatData[random.Next(possibleStatData.Count)];
             possibleStatData.Remove(randomStatData);
 
-            var generatedStat = GenerateFromData(randomStatData);
+            var generatedStat = GenerateFromData(randomStatData, random);
 
             generatedStats.Add(generatedStat);
         }

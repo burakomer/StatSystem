@@ -9,11 +9,11 @@ public struct StatModifierDataStruct : IStatModifierData
 {
     [SerializeField] private StatType statType;
     [SerializeField] private StatModifierType statModifierType;
-    [SerializeField] private int minValue;
-    [SerializeField] private int maxValue;
+    [SerializeField] private float minValue;
+    [SerializeField] private float maxValue;
     
     public StatType StatType => statType;
     public StatModifierType StatModifierType => statModifierType;
-    public int MinValue => minValue;
-    public int MaxValue => maxValue;
+    public float MinValue => minValue;
+    public float MaxValue => maxValue;
 }

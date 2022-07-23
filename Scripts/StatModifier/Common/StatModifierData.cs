@@ -10,6 +10,6 @@ public class StatModifierData : ScriptableObject, IStatModifierData
     
     public StatType StatType => data.StatType;
     public StatModifierType StatModifierType => data.StatModifierType;
-    public int MinValue => data.MinValue;
-    public int MaxValue => data.MaxValue;
+    public float MinValue => data.MinValue;
+    public float MaxValue => data.MaxValue;
 }
