@@ -14,6 +14,6 @@ public struct StatModifierDataStruct : IStatModifierData
     
     public StatType StatType => statType;
     public StatModifierType StatModifierType => statModifierType;
-    public int MinValue => minValue;
-    public int MaxValue => maxValue;
+    public float MinValue => minValue;
+    public float MaxValue => maxValue;
 }
