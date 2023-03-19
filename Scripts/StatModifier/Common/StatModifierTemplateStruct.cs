@@ -5,7 +5,7 @@ using UnityEngine;
 /// Used for serialization inside likely another asset. To avoid having multiple assets just for one asset.
 /// </summary>
 [Serializable]
-public struct StatModifierDataStruct : IStatModifierData
+public struct StatModifierTemplateStruct : IStatModifierTemplate
 {
     [SerializeField] private StatType statType;
     [SerializeField] private StatModifierType statModifierType;

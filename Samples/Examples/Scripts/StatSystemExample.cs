@@ -5,7 +5,7 @@ using Random = System.Random;
 
 public class StatSystemExample : MonoBehaviour
 {
-    [SerializeField] private StatUser statUser;
+    [SerializeField] private StatControllersGroup statControllersGroup;
     [SerializeField] private List<WeaponData> _weaponData;
 
     private Weapon currentWeapon;
@@ -25,12 +25,12 @@ public class StatSystemExample : MonoBehaviour
     private void CreateRandomWeaponAndApplyStatModifiersToStatUser()
     {
         if (currentWeapon != null)
-            currentWeapon.RemoveModifiers(statUser);
+            currentWeapon.RemoveModifiers(statControllersGroup);
 
         var randomWeaponData = _weaponData[random.Next(0, _weaponData.Count)];
             
-        var generatedDamage = StatModifier.GenerateFromData(randomWeaponData.baseDamage, random);
-        var generatedStats = StatModifier.GenerateRandomListFromData(
+        var generatedDamage = StatModifier.GenerateFromTemplate(randomWeaponData.baseDamage, random);
+        var generatedStats = StatModifier.GenerateRandomListFromTemplate(
             randomWeaponData.statCount, 
             randomWeaponData.possibleStatModifiers.ToList(),
             random
@@ -39,6 +39,6 @@ public class StatSystemExample : MonoBehaviour
         var weaponGameObject = new GameObject(randomWeaponData.itemName);
         currentWeapon = weaponGameObject.AddComponent<Weapon>();
         currentWeapon.Initialize(generatedDamage, generatedStats);
-        currentWeapon.ApplyModifiers(statUser);
+        currentWeapon.ApplyModifiers(statControllersGroup);
     }
 }

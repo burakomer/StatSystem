@@ -1,4 +1,4 @@
-public interface IStatModifierData
+public interface IStatModifierTemplate
 {
     StatType StatType { get; }
     StatModifierType StatModifierType { get; }

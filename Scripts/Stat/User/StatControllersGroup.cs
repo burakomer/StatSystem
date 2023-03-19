@@ -1,26 +1,26 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class StatUser : MonoBehaviour, IStatUser
+public class StatControllersGroup : MonoBehaviour, IStatUser
 {
     [Header("References")]
-    [SerializeField] private StatUserData statUserData;
+    [SerializeField] private List<StatController> statControllers;
 
-    private Dictionary<StatType, Stat> stats;
+    private Dictionary<StatType, StatController> statsByType;
 
     private void Awake()
     {
-        stats = statUserData.CreateStatDictionaryFromTypes();
+        statsByType = statControllers.ToDictionary(statController => statController.Stat.StatType, statController => statController);
     }
     
     public void ApplyStatModifier(StatModifier statModifier)
     {
-        if (!stats.TryGetValue(statModifier.StatType, out var stat))
+        if (!statsByType.TryGetValue(statModifier.StatType, out var stat))
             return;
-        stat.AddModifier(statModifier);
+        stat.ApplyStatModifier(statModifier);
     }
 
     public void ApplyStatModifiers(List<StatModifier> statModifiers)
@@ -31,16 +31,17 @@ public class StatUser : MonoBehaviour, IStatUser
 
     public void RemoveAllModifiersFromSource(IStatModifierSource statModifierSource)
     {
-        foreach (var stat in stats.Values) 
-            stat.RemoveAllModifiersFromSource(statModifierSource.Source);
+        foreach (var stat in statsByType.Values) 
+            stat.RemoveAllModifiersFromSource(statModifierSource);
     }
 
     private void OnGUI()
     {
         var sb = new StringBuilder();
         
-        foreach (var stat in stats.Values)
+        foreach (var statController in statsByType.Values)
         {
+            var stat = statController.Stat;
             sb.AppendLine($"<b>{stat.StatType.displayName}:</b> {stat.Value} {(stat.BaseValue)}");
             
             foreach (var statMod in stat.StatModifiers) 
@@ -50,9 +51,14 @@ public class StatUser : MonoBehaviour, IStatUser
         var style = new GUIStyle
         {
             fontSize = 24
-            
         };
 
         GUI.Label(new Rect(0, 0, 2000, 500), sb.ToString(), style);
+    }
+
+    [Button]
+    private void GetStatControllersInChildren()
+    {
+        statControllers = GetComponentsInChildren<StatController>().ToList();
     }
 }

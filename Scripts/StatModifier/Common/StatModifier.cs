@@ -28,14 +28,18 @@ public class StatModifier
         finalValue = StatModifierType.ModifyValue(finalValue, Value);
     }
 
-    public static StatModifier GenerateFromData(IStatModifierData randomStatData, Random random) =>
+    public static StatModifier GenerateFromTemplate(IStatModifierTemplate randomStatTemplate, Random random) =>
         new(
-            randomStatData.StatType,
-            randomStatData.StatModifierType,
-            Mathf.Lerp(randomStatData.MinValue, randomStatData.MaxValue, (float) random.NextDouble())
+            randomStatTemplate.StatType,
+            randomStatTemplate.StatModifierType,
+            Mathf.Lerp(randomStatTemplate.MinValue, randomStatTemplate.MaxValue, (float)random.NextDouble())
         );
 
-    public static List<StatModifier> GenerateRandomListFromData(int statCount, IList<StatModifierData> possibleStatData, Random random)
+    public static List<StatModifier> GenerateRandomListFromTemplate(
+        int statCount,
+        IList<StatModifierTemplateScriptableDelegate> possibleStatData,
+        Random random
+    )
     {
         var generatedStats = new List<StatModifier>(statCount);
 
@@ -44,7 +48,7 @@ public class StatModifier
             var randomStatData = possibleStatData[random.Next(possibleStatData.Count)];
             possibleStatData.Remove(randomStatData);
 
-            var generatedStat = GenerateFromData(randomStatData, random);
+            var generatedStat = GenerateFromTemplate(randomStatData, random);
 
             generatedStats.Add(generatedStat);
         }
