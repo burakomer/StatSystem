@@ -9,15 +9,15 @@ public struct StatValueReference
         Primitive,
         StatController
     }
-    
+
     public StatReferenceType statReferenceType;
-    
+
     [ShowIf(nameof(statReferenceType), StatReferenceType.Primitive)] [LabelText("Value")]
     public float primitiveValue;
-    
-    [ShowIf(nameof(statReferenceType), StatReferenceType.StatController)] [LabelText("Value")]
+
+    [ShowIf(nameof(statReferenceType), StatReferenceType.StatController)] [LabelText("Value")] [Required]
     public StatController statController;
-    
+
     public float Value
     {
         get
@@ -29,7 +29,6 @@ public struct StatValueReference
                 case StatReferenceType.Primitive:
                 default:
                     return primitiveValue;
-                    
             }
         }
     }
