@@ -1,5 +1,6 @@
 using System;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 [Serializable]
 public struct StatValueReference
@@ -13,10 +14,10 @@ public struct StatValueReference
     public StatReferenceType statReferenceType;
 
     [ShowIf(nameof(statReferenceType), StatReferenceType.Primitive)] [LabelText("Value")]
-    public float primitiveValue;
+    [SerializeField] private float primitiveValue;
 
     [ShowIf(nameof(statReferenceType), StatReferenceType.StatController)] [LabelText("Value")] [Required]
-    public StatController statController;
+    [SerializeField] private StatController statController;
 
     public float Value
     {

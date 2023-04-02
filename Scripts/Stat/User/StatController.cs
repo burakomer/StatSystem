@@ -12,6 +12,7 @@ public class StatController : MonoBehaviour, IStatUser
     private Stat stat;
 
     public Stat Stat => stat;
+    public float Value => Stat.Value;
 
     public UnityEvent<float> BaseValueChanged => stat.BaseValueChanged;
     public UnityEvent<float> ModifierAdded => stat.ModifierAdded;

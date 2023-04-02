@@ -8,14 +8,17 @@ public class StatControllersGroup : MonoBehaviour, IStatUser
 {
     [Header("References")]
     [SerializeField] private List<StatController> statControllers;
-
+    
+    [Header("Debug")]
+    [SerializeField] private bool showDebugInfo;
+    
     private Dictionary<StatType, StatController> statsByType;
 
     private void Awake()
     {
         statsByType = statControllers.ToDictionary(statController => statController.Stat.StatType, statController => statController);
     }
-    
+
     public void ApplyStatModifier(StatModifier statModifier)
     {
         if (!statsByType.TryGetValue(statModifier.StatType, out var stat))
@@ -25,26 +28,29 @@ public class StatControllersGroup : MonoBehaviour, IStatUser
 
     public void ApplyStatModifiers(List<StatModifier> statModifiers)
     {
-        foreach (var statModifier in statModifiers) 
+        foreach (var statModifier in statModifiers)
             ApplyStatModifier(statModifier);
     }
 
     public void RemoveAllModifiersFromSource(IStatModifierSource statModifierSource)
     {
-        foreach (var stat in statsByType.Values) 
+        foreach (var stat in statsByType.Values)
             stat.RemoveAllModifiersFromSource(statModifierSource);
     }
 
     private void OnGUI()
     {
-        var sb = new StringBuilder();
+        if (!showDebugInfo)
+            return;
         
+        var sb = new StringBuilder();
+
         foreach (var statController in statsByType.Values)
         {
             var stat = statController.Stat;
             sb.AppendLine($"<b>{stat.StatType.displayName}:</b> {stat.Value} {(stat.BaseValue)}");
-            
-            foreach (var statMod in stat.StatModifiers) 
+
+            foreach (var statMod in stat.StatModifiers)
                 sb.Append($" {statMod.ValueDescription}");
         }
 
