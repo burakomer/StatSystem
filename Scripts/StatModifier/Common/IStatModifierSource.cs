@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public interface IStatModifierSource
+namespace PandaEngine.StatSystem
 {
-    Object Source { get; }
-    void ApplyModifiers(IStatUser statUser);
-    void RemoveModifiers(IStatUser statUser);
+    public interface IStatModifierSource
+    {
+        Object Source { get; }
+        void ApplyModifiers(IStatUser statUser);
+        void RemoveModifiers(IStatUser statUser);
+    }
 }

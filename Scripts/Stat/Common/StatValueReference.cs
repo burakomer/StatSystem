@@ -2,34 +2,37 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[Serializable]
-public struct StatValueReference
+namespace PandaEngine.StatSystem
 {
-    public enum StatReferenceType
+    [Serializable]
+    public struct StatValueReference
     {
-        Primitive,
-        StatController
-    }
-
-    public StatReferenceType statReferenceType;
-
-    [ShowIf(nameof(statReferenceType), StatReferenceType.Primitive)] [LabelText("Value")]
-    [SerializeField] private float primitiveValue;
-
-    [ShowIf(nameof(statReferenceType), StatReferenceType.StatController)] [LabelText("Value")] [Required]
-    [SerializeField] private StatController statController;
-
-    public float Value
-    {
-        get
+        public enum StatReferenceType
         {
-            switch (statReferenceType)
+            Primitive,
+            StatController
+        }
+
+        public StatReferenceType statReferenceType;
+
+        [ShowIf(nameof(statReferenceType), StatReferenceType.Primitive)] [LabelText("Value")]
+        [SerializeField] private float primitiveValue;
+
+        [ShowIf(nameof(statReferenceType), StatReferenceType.StatController)] [LabelText("Value")] [Required]
+        [SerializeField] private StatController statController;
+
+        public float Value
+        {
+            get
             {
-                case StatReferenceType.StatController:
-                    return statController.Stat.Value;
-                case StatReferenceType.Primitive:
-                default:
-                    return primitiveValue;
+                switch (statReferenceType)
+                {
+                    case StatReferenceType.StatController:
+                        return statController.Stat.Value;
+                    case StatReferenceType.Primitive:
+                    default:
+                        return primitiveValue;
+                }
             }
         }
     }

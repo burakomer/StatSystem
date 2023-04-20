@@ -1,10 +1,13 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PercentStatModifierType", menuName = "RIG/Stats/Types/PercentStatModifierType")]
-public class PercentStatModifierType : StatModifierType
+namespace PandaEngine.StatSystem
 {
-    public override float ModifyValue(float value, float modifier)
+    [CreateAssetMenu(fileName = "PercentStatModifierType", menuName = "RIG/Stats/Types/PercentStatModifierType")]
+    public class PercentStatModifierType : StatModifierType
     {
-        return value * (1 + modifier);
+        public override float ModifyValue(float value, float modifier)
+        {
+            return value * (1 + modifier);
+        }
     }
 }

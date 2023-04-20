@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "StatType", menuName = "RIG/Stats/Common/StatType")]
-public class StatType : ScriptableObject
+namespace PandaEngine.StatSystem
 {
-    public string displayName;
+    [CreateAssetMenu(fileName = "StatType", menuName = "RIG/Stats/Common/StatType")]
+    public class StatType : ScriptableObject
+    {
+        public string displayName;
+    }
 }

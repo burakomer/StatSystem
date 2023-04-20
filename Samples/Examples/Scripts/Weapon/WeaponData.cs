@@ -1,16 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponData", menuName = "RIG/Item/WeaponData")]
-public class WeaponData : ScriptableObject 
+namespace PandaEngine.StatSystem.Examples
 {
-    [Header("Settings")]
-    public string itemName;
-    public int statCount;
+    [CreateAssetMenu(fileName = "WeaponData", menuName = "RIG/Item/WeaponData")]
+    public class WeaponData : ScriptableObject
+    {
+        [Header("Settings")]
+        public string itemName;
+        public int statCount;
 
-    [Header("Damage")]
-    public StatModifierTemplateStruct baseDamage;
+        [Header("Damage")]
+        public StatModifierTemplateStruct baseDamage;
 
-    [Space]
-    public List<StatModifierTemplateScriptableDelegate> possibleStatModifiers;
+        [Space]
+        public List<StatModifierTemplateScriptableDelegate> possibleStatModifiers;
+    }
 }
