@@ -16,9 +16,9 @@ namespace PandaEngine.StatSystem
         public Stat Stat => stat;
         public float Value => Stat.Value;
 
-        public UnityEvent<float> BaseValueChanged => stat.BaseValueChanged;
-        public UnityEvent<float> ModifierAdded => stat.ModifierAdded;
-        public UnityEvent<float> ModifierRemoved => stat.ModifierRemoved;
+        public UnityEvent<float> BaseValueChanged => stat.OnBaseValueChanged;
+        public UnityEvent<float> ModifierAdded => stat.OnModifierAdded;
+        public UnityEvent<float> ModifierRemoved => stat.OnModifierRemoved;
 
         private void Awake()
         {

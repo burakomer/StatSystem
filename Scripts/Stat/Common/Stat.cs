@@ -9,9 +9,10 @@ namespace PandaEngine.StatSystem
     [Serializable]
     public class Stat
     {
-        [HideInInspector] public UnityEvent<float> BaseValueChanged;
-        [HideInInspector] public UnityEvent<float> ModifierAdded;
-        [HideInInspector] public UnityEvent<float> ModifierRemoved;
+        [HideInInspector] public UnityEvent<float> OnBaseValueChanged;
+        [HideInInspector] public UnityEvent<float> OnValueUpdated;
+        [HideInInspector] public UnityEvent<float> OnModifierAdded;
+        [HideInInspector] public UnityEvent<float> OnModifierRemoved;
 
         [Header("State")]
         [SerializeField] private StatType statType;
@@ -33,6 +34,7 @@ namespace PandaEngine.StatSystem
 
                 value = CalculateFinalValue();
                 isDirty = false;
+                OnValueUpdated?.Invoke(value);
 
                 return value;
             }
@@ -48,7 +50,7 @@ namespace PandaEngine.StatSystem
             {
                 baseValue = value;
                 isDirty = true;
-                BaseValueChanged?.Invoke(Value);
+                OnBaseValueChanged?.Invoke(Value);
             }
         }
 
@@ -72,7 +74,7 @@ namespace PandaEngine.StatSystem
         {
             statModifiers.Add(mod);
             isDirty = true;
-            ModifierAdded?.Invoke(Value);
+            OnModifierAdded?.Invoke(Value);
         }
 
         public bool RemoveModifier(StatModifier mod)
@@ -81,7 +83,7 @@ namespace PandaEngine.StatSystem
                 return false;
 
             isDirty = true;
-            ModifierRemoved?.Invoke(Value);
+            OnModifierRemoved?.Invoke(Value);
             return true;
         }
 
@@ -95,7 +97,7 @@ namespace PandaEngine.StatSystem
 
                 statModifiers.RemoveAt(i);
                 isDirty = true;
-                ModifierRemoved?.Invoke(Value);
+                OnModifierRemoved?.Invoke(Value);
 
                 didRemove = true;
             }
