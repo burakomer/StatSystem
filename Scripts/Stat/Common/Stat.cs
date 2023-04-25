@@ -58,6 +58,11 @@ namespace PandaEngine.StatSystem
         {
             statModifiers = new List<StatModifier>();
             isDirty = true;
+
+            OnBaseValueChanged = new UnityEvent<float>();
+            OnValueUpdated = new UnityEvent<float>();
+            OnModifierAdded = new UnityEvent<float>();
+            OnModifierRemoved = new UnityEvent<float>();
         }
 
         public Stat(StatType statType) : this()
