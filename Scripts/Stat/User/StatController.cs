@@ -16,13 +16,19 @@ namespace PandaEngine.StatSystem
         public Stat Stat => stat;
         public float Value => Stat.Value;
 
-        public UnityEvent<float> BaseValueChanged => stat.OnBaseValueChanged;
-        public UnityEvent<float> ModifierAdded => stat.OnModifierAdded;
-        public UnityEvent<float> ModifierRemoved => stat.OnModifierRemoved;
+        public UnityEvent<StatValueChangeArgs> OnBaseValueChanged;
+        public UnityEvent<StatValueChangeArgs> OnValueUpdated;
+        public UnityEvent<StatModifierChangeArgs> OnModifierAdded;
+        public UnityEvent<StatModifierChangeArgs> OnModifierRemoved;
 
         private void Awake()
         {
             stat = new Stat(statType, initialBaseValue);
+
+            stat.OnBaseValueChanged += OnBaseValueChangedCallback;
+            stat.OnValueUpdated += OnValueUpdatedCallback;
+            stat.OnModifierAdded += OnModifierAddedCallback;
+            stat.OnModifierRemoved += OnModifierRemovedCallback;
         }
 
         public void ApplyStatModifier(StatModifier statModifier)
@@ -41,7 +47,21 @@ namespace PandaEngine.StatSystem
 
         public void RemoveAllModifiersFromSource(IStatModifierSource statModifierSource)
         {
-            stat.RemoveAllModifiersFromSource(statModifierSource.Source);
+            var didRemove = stat.RemoveAllModifiersFromSource(statModifierSource.Source);
+
+            print($"didRemove: {didRemove}");
         }
+
+        private void OnBaseValueChangedCallback(StatValueChangeArgs args) =>
+            OnBaseValueChanged?.Invoke(args);
+
+        private void OnValueUpdatedCallback(StatValueChangeArgs args) =>
+            OnValueUpdated?.Invoke(args);
+
+        private void OnModifierAddedCallback(StatModifierChangeArgs args) =>
+            OnModifierAdded?.Invoke(args);
+
+        private void OnModifierRemovedCallback(StatModifierChangeArgs args) =>
+            OnModifierRemoved?.Invoke(args);
     }
 }
