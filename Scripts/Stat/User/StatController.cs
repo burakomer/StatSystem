@@ -47,9 +47,7 @@ namespace PandaEngine.StatSystem
 
         public void RemoveAllModifiersFromSource(IStatModifierSource statModifierSource)
         {
-            var didRemove = stat.RemoveAllModifiersFromSource(statModifierSource.Source);
-
-            print($"didRemove: {didRemove}");
+            stat.RemoveAllModifiersFromSource(statModifierSource.Source);
         }
 
         private void OnBaseValueChangedCallback(StatValueChangeArgs args) =>
