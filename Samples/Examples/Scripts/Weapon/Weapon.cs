@@ -27,15 +27,15 @@ namespace PandaEngine.StatSystem.Examples
             print($"<b>{name}</b> | <b>Damage:</b> {_damage.Description} <b>Stats:</b> {statsText}");
         }
 
-        public void ApplyModifiers(IStatUser statUser)
+        public void ApplyModifiers(IStatUserDelegate statUserDelegate)
         {
-            statUser.ApplyStatModifier(_damage);
-            statUser.ApplyStatModifiers(_statModifiers);
+            statUserDelegate.StatUser.ApplyStatModifier(_damage);
+            statUserDelegate.StatUser.ApplyStatModifiers(_statModifiers);
         }
 
-        public void RemoveModifiers(IStatUser statUser)
+        public void RemoveModifiers(IStatUserDelegate statUserDelegate)
         {
-            statUser.RemoveAllModifiersFromSource(this);
+            statUserDelegate.StatUser.RemoveAllModifiersFromSource(this);
         }
     }
 }
