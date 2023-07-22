@@ -5,32 +5,26 @@ using Object = UnityEngine.Object;
 
 namespace PandaEngine.StatSystem
 {
-    public class StatArgs
+    public struct StatValueChangeArgs
     {
         public Stat Stat { get; }
-
-        public StatArgs(Stat stat)
-        {
-            Stat = stat;
-        }
-    }
-
-    public class StatValueChangeArgs : StatArgs
-    {
         public float ValueDifference { get; }
 
-        public StatValueChangeArgs(Stat stat, float valueDifference) : base(stat)
+        public StatValueChangeArgs(Stat stat, float valueDifference)
         {
+            Stat = stat;
             ValueDifference = valueDifference;
         }
     }
 
-    public class StatModifierChangeArgs : StatArgs
+    public struct StatModifierChangeArgs
     {
+        public Stat Stat { get; }
         public StatModifier StatModifier { get; }
 
-        public StatModifierChangeArgs(Stat stat, StatModifier statModifier) : base(stat)
+        public StatModifierChangeArgs(Stat stat, StatModifier statModifier)
         {
+            Stat = stat;
             StatModifier = statModifier;
         }
     }
@@ -49,50 +43,19 @@ namespace PandaEngine.StatSystem
         [SerializeField] private float value;
         [SerializeField] private List<StatModifier> statModifiers;
 
-        private bool isDirty;
-
         public StatType StatType => statType;
         public IReadOnlyList<StatModifier> StatModifiers => statModifiers.AsReadOnly();
 
-        public float Value
-        {
-            get
-            {
-                if (!isDirty)
-                    return value;
-
-                var previousValue = value;
-                value = CalculateFinalValue();
-                isDirty = false;
-
-                var args = new StatValueChangeArgs(this, value - previousValue);
-                OnValueUpdated?.Invoke(args);
-
-                return value;
-            }
-        }
+        public float Value => value;
 
         /// <summary>
         /// When set, it will trigger an event to inform subscribers with the new final value.
         /// </summary>
-        public float BaseValue
-        {
-            get => baseValue;
-            set
-            {
-                var previousBaseValue = baseValue;
-                baseValue = value;
-                isDirty = true;
-
-                var args = new StatValueChangeArgs(this, baseValue - previousBaseValue);
-                OnBaseValueChanged?.Invoke(args);
-            }
-        }
+        public float BaseValue => baseValue;
 
         private Stat()
         {
             statModifiers = new List<StatModifier>();
-            isDirty = true;
         }
 
         public Stat(StatType statType) : this()
@@ -103,45 +66,19 @@ namespace PandaEngine.StatSystem
         public Stat(StatType statType, float baseValue) : this(statType)
         {
             this.baseValue = baseValue;
+            UpdateValue();
         }
 
-        public void AddModifier(StatModifier mod)
+        private void UpdateValue()
         {
-            statModifiers.Add(mod);
-            isDirty = true;
+            var previousValue = value;
+            value = CalculateFinalValue();
 
-            var args = new StatModifierChangeArgs(this, mod);
-            OnModifierAdded?.Invoke(args);
+            var args = new StatValueChangeArgs(this, value - previousValue);
+            OnValueUpdated?.Invoke(args);
         }
 
-        public bool RemoveModifier(StatModifier mod)
-        {
-            if (!statModifiers.Remove(mod))
-                return false;
-
-            isDirty = true;
-
-            var args = new StatModifierChangeArgs(this, mod);
-            OnModifierRemoved?.Invoke(args);
-            return true;
-        }
-
-        public bool RemoveAllModifiersFromSource(Object source)
-        {
-            var didRemove = false;
-            for (var i = statModifiers.Count - 1; i >= 0; i--)
-            {
-                if (statModifiers[i].Source != source)
-                    continue;
-
-                RemoveModifier(statModifiers[i]);
-                didRemove = true;
-            }
-
-            return didRemove;
-        }
-
-        public float CalculateFinalValue()
+        private float CalculateFinalValue()
         {
             var statMods = StatModifierGrouping.GroupAndOrderModifiers(statModifiers);
 
@@ -155,6 +92,65 @@ namespace PandaEngine.StatSystem
 
             finalValue = 0f;
             return finalValue;
+        }
+
+        public void SetBaseValue(float newValue)
+        {
+            var previousBaseValue = baseValue;
+            baseValue = newValue;
+
+            var args = new StatValueChangeArgs(this, baseValue - previousBaseValue);
+            OnBaseValueChanged?.Invoke(args);
+
+            UpdateValue();
+        }
+
+        public void AddModifier(StatModifier mod)
+        {
+            statModifiers.Add(mod);
+
+            var args = new StatModifierChangeArgs(this, mod);
+            OnModifierAdded?.Invoke(args);
+
+            UpdateValue();
+        }
+
+        public void AddModifiers(List<StatModifier> mods)
+        {
+            foreach (var mod in mods)
+                AddModifier(mod);
+        }
+
+        public bool RemoveModifier(StatModifier mod, bool updateValue = true)
+        {
+            if (!statModifiers.Remove(mod))
+                return false;
+
+            var args = new StatModifierChangeArgs(this, mod);
+            OnModifierRemoved?.Invoke(args);
+
+            if (updateValue)
+                UpdateValue();
+
+            return true;
+        }
+
+        public bool RemoveAllModifiersFromSource(Object source)
+        {
+            var didRemove = false;
+            for (var i = statModifiers.Count - 1; i >= 0; i--)
+            {
+                if (statModifiers[i].Source != source)
+                    continue;
+
+                RemoveModifier(statModifiers[i], false);
+                didRemove = true;
+            }
+
+            if (didRemove)
+                UpdateValue();
+
+            return didRemove;
         }
     }
 }

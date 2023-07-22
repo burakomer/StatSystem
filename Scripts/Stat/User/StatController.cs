@@ -16,8 +16,8 @@ namespace PandaEngine.StatSystem
         public Stat Stat => stat;
         public float Value => Stat.Value;
 
-        public UnityEvent<StatValueChangeArgs> OnBaseValueChanged;
         public UnityEvent<StatValueChangeArgs> OnValueUpdated;
+        public UnityEvent<StatValueChangeArgs> OnBaseValueChanged;
         public UnityEvent<StatModifierChangeArgs> OnModifierAdded;
         public UnityEvent<StatModifierChangeArgs> OnModifierRemoved;
 
@@ -25,8 +25,8 @@ namespace PandaEngine.StatSystem
         {
             stat = new Stat(statType, initialBaseValue);
 
-            stat.OnBaseValueChanged += OnBaseValueChangedCallback;
             stat.OnValueUpdated += OnValueUpdatedCallback;
+            stat.OnBaseValueChanged += OnBaseValueChangedCallback;
             stat.OnModifierAdded += OnModifierAddedCallback;
             stat.OnModifierRemoved += OnModifierRemovedCallback;
         }
@@ -50,11 +50,11 @@ namespace PandaEngine.StatSystem
             stat.RemoveAllModifiersFromSource(statModifierSource.Source);
         }
 
-        private void OnBaseValueChangedCallback(StatValueChangeArgs args) =>
-            OnBaseValueChanged?.Invoke(args);
-
         private void OnValueUpdatedCallback(StatValueChangeArgs args) =>
             OnValueUpdated?.Invoke(args);
+
+        private void OnBaseValueChangedCallback(StatValueChangeArgs args) =>
+            OnBaseValueChanged?.Invoke(args);
 
         private void OnModifierAddedCallback(StatModifierChangeArgs args) =>
             OnModifierAdded?.Invoke(args);
