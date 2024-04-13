@@ -33,11 +33,10 @@ namespace PandaEngine.StatSystem
     public class Stat
     {
         public event Action<StatValueChangeArgs> OnBaseValueChanged;
-        public event Action<StatValueChangeArgs> OnValueUpdated;
         public event Action<StatModifierChangeArgs> OnModifierAdded;
         public event Action<StatModifierChangeArgs> OnModifierRemoved;
+        public event Action<StatValueChangeArgs> OnValueUpdated;
 
-        [Header("State")]
         [SerializeField] private StatType statType;
         [SerializeField] private float baseValue;
         [SerializeField] private float value;
@@ -68,6 +67,8 @@ namespace PandaEngine.StatSystem
             this.baseValue = baseValue;
             UpdateValue();
         }
+
+        public static Stat New(StatSettings statSettings) => new(statSettings.statType, statSettings.initialBaseValue);
 
         private void UpdateValue()
         {

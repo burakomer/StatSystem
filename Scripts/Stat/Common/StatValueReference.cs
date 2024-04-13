@@ -1,25 +1,21 @@
 using System;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace PandaEngine.StatSystem
 {
     [Serializable]
-    public struct StatValueReference
+    public class StatValueReference
     {
         public enum StatReferenceType
         {
-            Primitive,
-            StatController
+            LocalStat,
+            StatsController,
         }
 
-        public StatReferenceType statReferenceType;
-
-        [ShowIf(nameof(statReferenceType), StatReferenceType.Primitive)] [LabelText("Value")]
-        [SerializeField] private float primitiveValue;
-
-        [ShowIf(nameof(statReferenceType), StatReferenceType.StatController)] [LabelText("Value")] [Required]
-        [SerializeField] private StatController statController;
+        [SerializeField] private StatReferenceType statReferenceType;
+        [SerializeField] private Stat localStat;
+        [SerializeField] private StatsController statsController;
+        [SerializeField] private StatType statType;
 
         public float Value
         {
@@ -27,13 +23,51 @@ namespace PandaEngine.StatSystem
             {
                 switch (statReferenceType)
                 {
-                    case StatReferenceType.StatController:
-                        return statController.Stat.Value;
-                    case StatReferenceType.Primitive:
+                    case StatReferenceType.StatsController:
+                        return statsController.GetStat(statType).Value;
+                    case StatReferenceType.LocalStat:
                     default:
-                        return primitiveValue;
+                        return localStat.Value;
                 }
             }
+        }
+
+        public event Action<StatValueChangeArgs> OnValueUpdated
+        {
+            add
+            {
+                switch (statReferenceType)
+                {
+                    case StatReferenceType.StatsController:
+                        statsController.GetStat(statType).OnValueUpdated += value;
+                        break;
+                    case StatReferenceType.LocalStat:
+                    default:
+                        localStat.OnValueUpdated += value;
+                        break;
+                }
+            }
+            remove
+            {
+                switch (statReferenceType)
+                {
+                    case StatReferenceType.StatsController:
+                        statsController.GetStat(statType).OnValueUpdated -= value;
+                        break;
+                    case StatReferenceType.LocalStat:
+                    default:
+                        localStat.OnValueUpdated -= value;
+                        break;
+                }
+            }
+        }
+
+        public StatValueReference(float value)
+        {
+            statReferenceType = StatReferenceType.LocalStat;
+            localStat = new Stat(null, value);
+            statsController = null;
+            statType = null;
         }
     }
 }
