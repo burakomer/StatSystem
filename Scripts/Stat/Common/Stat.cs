@@ -45,12 +45,24 @@ namespace PandaEngine.StatSystem
         public StatType StatType => statType;
         public IReadOnlyList<StatModifier> StatModifiers => statModifiers.AsReadOnly();
 
-        public float Value => value;
+        public float Value
+        {
+            get
+            {
+                if (!_isDirty)
+                    return value;
+
+                UpdateValue(true);
+                return value;
+            }
+        }
 
         /// <summary>
         /// When set, it will trigger an event to inform subscribers with the new final value.
         /// </summary>
         public float BaseValue => baseValue;
+
+        private bool _isDirty = true;
 
         private Stat()
         {
@@ -70,10 +82,14 @@ namespace PandaEngine.StatSystem
 
         public static Stat New(StatSettings statSettings) => new(statSettings.statType, statSettings.initialBaseValue);
 
-        private void UpdateValue()
+        private void UpdateValue(bool withoutNotify = false)
         {
             var previousValue = value;
             value = CalculateFinalValue();
+            _isDirty = false;
+
+            if (withoutNotify)
+                return;
 
             var args = new StatValueChangeArgs(this, value - previousValue);
             OnValueUpdated?.Invoke(args);
