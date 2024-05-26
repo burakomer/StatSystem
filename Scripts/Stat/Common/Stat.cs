@@ -80,7 +80,7 @@ namespace PandaEngine.StatSystem
             UpdateValue();
         }
 
-        public static Stat New(StatSettings statSettings) => new(statSettings.statType, statSettings.initialBaseValue);
+        public static Stat FromSettings(StatSettings statSettings) => new(statSettings.statType, statSettings.initialBaseValue);
 
         private void UpdateValue(bool withoutNotify = false)
         {

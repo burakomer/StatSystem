@@ -36,10 +36,10 @@ namespace PandaEngine.StatSystem
                 ApplyStatModifier(statModifier);
         }
 
-        public void RemoveAllModifiersFromSource(IStatModifierSource statModifierSource)
+        public void RemoveAllModifiersBySource(IStatModifierSource statModifierSource)
         {
             foreach (var stat in statsByType.Values)
-                stat.RemoveAllModifiersFromSource(statModifierSource);
+                stat.RemoveAllModifiersBySource(statModifierSource);
         }
 
         private void OnGUI()
@@ -52,7 +52,7 @@ namespace PandaEngine.StatSystem
             foreach (var statController in statsByType.Values)
             {
                 var stat = statController.Stat;
-                sb.AppendLine($"<b>{stat.StatType.displayName}:</b> {stat.Value} {(stat.BaseValue)}");
+                sb.AppendLine($"<b>{stat.StatType.DisplayName}:</b> {stat.Value} {(stat.BaseValue)}");
 
                 foreach (var statMod in stat.StatModifiers)
                     sb.Append($" {statMod.ValueDescription}");

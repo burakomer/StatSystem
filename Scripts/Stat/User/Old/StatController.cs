@@ -45,7 +45,7 @@ namespace PandaEngine.StatSystem
                 ApplyStatModifier(statModifier);
         }
 
-        public void RemoveAllModifiersFromSource(IStatModifierSource statModifierSource)
+        public void RemoveAllModifiersBySource(IStatModifierSource statModifierSource)
         {
             stat.RemoveAllModifiersFromSource(statModifierSource.Source);
         }

@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace PandaEngine.StatSystem.Examples
 {
@@ -27,15 +29,9 @@ namespace PandaEngine.StatSystem.Examples
             print($"<b>{name}</b> | <b>Damage:</b> {_damage.Description} <b>Stats:</b> {statsText}");
         }
 
-        public void ApplyModifiers(IStatUserDelegate statUserDelegate)
+        public List<StatModifierData> GetStatModifiersData()
         {
-            statUserDelegate.StatUser.ApplyStatModifier(_damage);
-            statUserDelegate.StatUser.ApplyStatModifiers(_statModifiers);
-        }
-
-        public void RemoveModifiers(IStatUserDelegate statUserDelegate)
-        {
-            statUserDelegate.StatUser.RemoveAllModifiersFromSource(this);
+            throw new NotImplementedException();
         }
     }
 }

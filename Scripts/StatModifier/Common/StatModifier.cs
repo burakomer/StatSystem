@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = System.Random;
 
 namespace PandaEngine.StatSystem
 {
@@ -10,52 +7,52 @@ namespace PandaEngine.StatSystem
     public class StatModifier
     {
         public StatType StatType;
-        public StatModifierType StatModifierType;
+        public StatCalculationType CalculationType;
         public float Value;
-        [HideInInspector] public Object Source;
+        public Object Source;
 
-        public string Description => $"{StatType.displayName} {ValueDescription}";
-        public string ValueDescription => $"+{Value:F}{StatModifierType.prefix}";
+        public string Description => $"{StatType.DisplayName} {ValueDescription}";
+        public string ValueDescription => $"+{Value:F}{CalculationType.Prefix}";
 
-        public StatModifier(StatType statType, StatModifierType statModifyType, float value)
+        public StatModifier(StatType statType, StatCalculationType calculationType, float value, Object source)
         {
             StatType = statType;
-            StatModifierType = statModifyType;
+            CalculationType = calculationType;
             Value = value;
-            Source = null;
+            Source = source;
         }
 
         public void SetModifiedValue(ref float finalValue)
         {
-            finalValue = StatModifierType.ModifyValue(finalValue, Value);
+            finalValue = CalculationType.ModifyValue(finalValue, Value);
         }
 
-        public static StatModifier GenerateFromTemplate(IStatModifierTemplate randomStatTemplate, Random random) =>
-            new(
-                randomStatTemplate.StatType,
-                randomStatTemplate.StatModifierType,
-                Mathf.Lerp(randomStatTemplate.MinValue, randomStatTemplate.MaxValue, (float)random.NextDouble())
-            );
+        // public static StatModifier GenerateFromTemplate(IStatModifierTemplate randomStatTemplate, Random random) =>
+        //     new(
+        //         randomStatTemplate.StatType,
+        //         randomStatTemplate.StatModifierType,
+        //         Mathf.Lerp(randomStatTemplate.MinValue, randomStatTemplate.MaxValue, (float)random.NextDouble())
+        //     );
 
-        public static List<StatModifier> GenerateRandomListFromTemplate(
-            int statCount,
-            IList<StatModifierTemplateScriptableDelegate> possibleStatData,
-            Random random
-        )
-        {
-            var generatedStats = new List<StatModifier>(statCount);
-
-            for (var i = 0; i < statCount; i++)
-            {
-                var randomStatData = possibleStatData[random.Next(possibleStatData.Count)];
-                possibleStatData.Remove(randomStatData);
-
-                var generatedStat = GenerateFromTemplate(randomStatData, random);
-
-                generatedStats.Add(generatedStat);
-            }
-
-            return generatedStats;
-        }
+        // public static List<StatModifier> GenerateRandomListFromTemplate(
+        //     int statCount,
+        //     IList<StatModifierTemplateScriptableDelegate> possibleStatData,
+        //     Random random
+        // )
+        // {
+        //     var generatedStats = new List<StatModifier>(statCount);
+        //
+        //     for (var i = 0; i < statCount; i++)
+        //     {
+        //         var randomStatData = possibleStatData[random.Next(possibleStatData.Count)];
+        //         possibleStatData.Remove(randomStatData);
+        //
+        //         var generatedStat = GenerateFromTemplate(randomStatData, random);
+        //
+        //         generatedStats.Add(generatedStat);
+        //     }
+        //
+        //     return generatedStats;
+        // }
     }
 }

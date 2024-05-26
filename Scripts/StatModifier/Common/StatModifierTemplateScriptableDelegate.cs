@@ -10,8 +10,8 @@ namespace PandaEngine.StatSystem
     {
         [SerializeField] private StatModifierTemplateStruct template;
 
-        public StatType StatType => template.StatType;
-        public StatModifierType StatModifierType => template.StatModifierType;
+        public string StatId => template.StatId;
+        public string CalculationId => template.CalculationId;
         public float MinValue => template.MinValue;
         public float MaxValue => template.MaxValue;
     }

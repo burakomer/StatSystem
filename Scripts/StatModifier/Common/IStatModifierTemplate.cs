@@ -2,8 +2,8 @@ namespace PandaEngine.StatSystem
 {
     public interface IStatModifierTemplate
     {
-        StatType StatType { get; }
-        StatModifierType StatModifierType { get; }
+        string StatId { get; }
+        string CalculationId { get; }
         float MinValue { get; }
         float MaxValue { get; }
     }

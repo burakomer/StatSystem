@@ -27,21 +27,21 @@ namespace PandaEngine.StatSystem.Examples
         private void CreateRandomWeaponAndApplyStatModifiersToStatUser()
         {
             if (currentWeapon != null)
-                currentWeapon.RemoveModifiers(statControllersGroup);
+                statControllersGroup.RemoveAllModifiersBySource(currentWeapon);
 
-            var randomWeaponData = _weaponData[random.Next(0, _weaponData.Count)];
-
-            var generatedDamage = StatModifier.GenerateFromTemplate(randomWeaponData.baseDamage, random);
-            var generatedStats = StatModifier.GenerateRandomListFromTemplate(
-                randomWeaponData.statCount,
-                randomWeaponData.possibleStatModifiers.ToList(),
-                random
-            );
-
-            var weaponGameObject = new GameObject(randomWeaponData.itemName);
-            currentWeapon = weaponGameObject.AddComponent<Weapon>();
-            currentWeapon.Initialize(generatedDamage, generatedStats);
-            currentWeapon.ApplyModifiers(statControllersGroup);
+            // var randomWeaponData = _weaponData[random.Next(0, _weaponData.Count)];
+            //
+            // var generatedDamage = StatModifier.GenerateFromTemplate(randomWeaponData.baseDamage, random);
+            // var generatedStats = StatModifier.GenerateRandomListFromTemplate(
+            //     randomWeaponData.statCount,
+            //     randomWeaponData.possibleStatModifiers.ToList(),
+            //     random
+            // );
+            //
+            // var weaponGameObject = new GameObject(randomWeaponData.itemName);
+            // currentWeapon = weaponGameObject.AddComponent<Weapon>();
+            // currentWeapon.Initialize(generatedDamage, generatedStats);
+            // currentWeapon.GetModifiers(statControllersGroup);
         }
     }
 }

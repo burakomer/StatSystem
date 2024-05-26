@@ -2,9 +2,13 @@ using UnityEngine;
 
 namespace PandaEngine.StatSystem
 {
-    [CreateAssetMenu(fileName = "StatType", menuName = "RIG/Stats/Common/StatType")]
+    [CreateAssetMenu(fileName = "Stat Type", menuName = "Panda Engine/Stat System/Core/Stat Type")]
     public class StatType : ScriptableObject
     {
-        public string displayName;
+        [SerializeField] private string id;
+        [SerializeField] private string displayName;
+
+        public string Id => id;
+        public string DisplayName => displayName;
     }
 }

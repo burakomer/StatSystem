@@ -9,13 +9,13 @@ namespace PandaEngine.StatSystem
     [Serializable]
     public struct StatModifierTemplateStruct : IStatModifierTemplate
     {
-        [SerializeField] private StatType statType;
-        [SerializeField] private StatModifierType statModifierType;
+        [SerializeField] private string statId;
+        [SerializeField] private string calculationId;
         [SerializeField] private float minValue;
         [SerializeField] private float maxValue;
 
-        public StatType StatType => statType;
-        public StatModifierType StatModifierType => statModifierType;
+        public string StatId => statId;
+        public string CalculationId => calculationId;
         public float MinValue => minValue;
         public float MaxValue => maxValue;
     }
