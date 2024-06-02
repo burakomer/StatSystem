@@ -11,6 +11,7 @@ namespace PandaEngine.StatSystem.Examples
         [SerializeField] private StatModifier _damage;
         [SerializeField] private List<StatModifier> _statModifiers;
 
+        public event StatModifiersChangedDelegate OnStatModifiersChanged;
         public Object Source => this;
 
         public void Initialize(StatModifier damage, List<StatModifier> statModifiers)

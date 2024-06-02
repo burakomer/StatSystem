@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace PandaEngine.StatSystem
 {
     [DefaultExecutionOrder(-1)]
-    public class StatController : MonoBehaviour, IStatUser
+    public class StatController : MonoBehaviour
     {
         [Header("Settings")]
         [SerializeField] private StatType statType;

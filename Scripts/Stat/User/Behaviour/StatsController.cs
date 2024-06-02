@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace PandaEngine.StatSystem
@@ -12,7 +13,7 @@ namespace PandaEngine.StatSystem
         public float initialBaseValue;
     }
 
-    public class StatsController : MonoBehaviour, IStatUser, IStatUserDelegate
+    public class StatsController : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] private StatSystem statSystem;
@@ -21,51 +22,87 @@ namespace PandaEngine.StatSystem
         [Header("Debug")]
         [SerializeField] private bool showDebugInfo;
 
-        private List<Stat> stats;
+        [SerializeField] [ReadOnly] private List<Stat> stats;
+
+        #region UNITY METHODS
 
         private void Awake()
         {
             stats = statsSettings.ConvertAll(Stat.FromSettings);
         }
 
-        public IStatUser StatUser => this;
+        #endregion
 
-        public Stat GetStat(string statId) => GetStat(statsSettings.Find(stat => stat.statType.Id == statId).statType);
-        public Stat GetStat(StatType statType) => stats.Find(stat => stat.StatType == statType);
+        #region PRIVATE METHODS
 
-        public void ApplyStatModifierSource(IStatModifierSource statModifierSource)
-        {
-            var statModifiers = statModifierSource.GetStatModifiersData()
-                .ConvertAll(data =>
-                {
-                    // print($"StatId: {data.StatId}, CalculationId: {data.CalculationId}, Value: {data.Value}");
-                    var statType = statSystem.GetStatType(data.StatId);
-                    var calculationType = statSystem.GetStatCalculationType(data.CalculationId);
-                    // print($"StatType Null: {statType == null}, CalculationType Null: {calculationType == null}");
-
-                    return new StatModifier(statType, calculationType, data.Value, statModifierSource.Source);
-                });
-
-            ApplyStatModifiers(statModifiers);
-        }
-
-        public void ApplyStatModifier(StatModifier statModifier)
+        private void ApplyStatModifier(StatModifier statModifier)
         {
             var stat = stats.Find(stat => stat.StatType == statModifier.StatType);
             stat?.AddModifier(statModifier);
         }
 
-        public void ApplyStatModifiers(List<StatModifier> statModifiers)
+        private void ApplyStatModifiers(List<StatModifier> statModifiers)
         {
             foreach (var statModifier in statModifiers)
                 ApplyStatModifier(statModifier);
         }
 
-        public void RemoveStatModifierSource(IStatModifierSource statModifierSource)
+        private void ApplyStatModifiersFromSource(IStatModifierSource statModifierSource)
+        {
+            var statModifiers = GetNewStatModifiersFromSource(statModifierSource);
+            ApplyStatModifiers(statModifiers);
+        }
+
+        private List<StatModifier> GetNewStatModifiersFromSource(IStatModifierSource statModifierSource)
+        {
+            return statModifierSource.GetStatModifiersData()
+                .ConvertAll(data =>
+                {
+                    var statType = statSystem.GetStatType(data.StatId);
+                    var calculationType = statSystem.GetStatCalculationType(data.CalculationId);
+                    return new StatModifier(statType, calculationType, data.Value, statModifierSource.Source);
+                });
+        }
+
+        private void RemoveAllStatModifiersFromSource(IStatModifierSource statModifierSource)
         {
             foreach (var stat in stats)
                 stat.RemoveAllModifiersFromSource(statModifierSource.Source);
         }
+
+        #endregion
+
+        #region DATA METHODS
+
+        public Stat GetStat(string statId) => GetStat(statsSettings.Find(stat => stat.statType.Id == statId).statType);
+        public Stat GetStat(StatType statType) => stats.Find(stat => stat.StatType == statType);
+
+        #endregion
+
+        #region STAT MODIFIER SOURCE METHODS
+
+        public void ApplyStatModifierSource(IStatModifierSource statModifierSource)
+        {
+            ApplyStatModifiersFromSource(statModifierSource);
+            statModifierSource.OnStatModifiersChanged += UpdateStatModifierSource;
+        }
+
+        private void UpdateStatModifierSource(IStatModifierSource statModifierSource)
+        {
+            RemoveAllStatModifiersFromSource(statModifierSource);
+            ApplyStatModifiersFromSource(statModifierSource);
+        }
+
+        public void RemoveStatModifierSource(IStatModifierSource statModifierSource)
+        {
+            RemoveAllStatModifiersFromSource(statModifierSource);
+
+            statModifierSource.OnStatModifiersChanged -= UpdateStatModifierSource;
+        }
+
+        #endregion
+
+        #region EDITOR METHODS
 
         private void OnGUI()
         {
@@ -89,5 +126,7 @@ namespace PandaEngine.StatSystem
 
             GUI.Label(new Rect(0, 0, 2000, 500), sb.ToString(), style);
         }
+
+        #endregion
     }
 }

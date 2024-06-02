@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace PandaEngine.StatSystem
 {
-    public class StatControllersGroup : MonoBehaviour, IStatUser, IStatUserDelegate
+    public class StatControllersGroup : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] private List<StatController> statControllers;
@@ -20,8 +20,6 @@ namespace PandaEngine.StatSystem
         {
             statsByType = statControllers.ToDictionary(statController => statController.Stat.StatType, statController => statController);
         }
-
-        public IStatUser StatUser => this;
 
         public void ApplyStatModifier(StatModifier statModifier)
         {
