@@ -1,11 +1,21 @@
 using System;
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
 
 namespace PandaEngine.StatSystem
 {
     [Serializable]
     public class StatModifierData : ICloneable
     {
+#if ODIN_INSPECTOR
+        [ValueDropdown("@OdinUtils.AllStatTypeIdsDropdown")]
+#endif
         public string StatId;
+
+#if ODIN_INSPECTOR
+        [ValueDropdown("@OdinUtils.AllStatCalculationTypeIdsDropdown")]
+#endif
         public string CalculationId;
         public float Value;
 
