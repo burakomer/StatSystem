@@ -14,5 +14,8 @@ namespace PandaEngine.StatSystem
 
         public StatCalculationType GetStatCalculationType(string calculationId) =>
             statCalculationTypes.Find(calculationType => calculationType.Id == calculationId);
+
+        public string GetStatModifierValueText(StatModifierData statModifierData) =>
+            GetStatCalculationType(statModifierData.CalculationId).GetValueText(statModifierData.Value);
     }
 }

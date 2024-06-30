@@ -9,5 +9,10 @@ namespace PandaEngine.StatSystem
         {
             return value + modifier;
         }
+
+        public override string GetValueText(float value)
+        {
+            return $"+{value:F}";
+        }
     }
 }

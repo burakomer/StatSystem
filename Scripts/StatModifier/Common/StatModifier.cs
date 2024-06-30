@@ -12,7 +12,7 @@ namespace PandaEngine.StatSystem
         public Object Source;
 
         public string Description => $"{StatType.DisplayName} {ValueDescription}";
-        public string ValueDescription => $"+{Value:F}{CalculationType.Prefix}";
+        public string ValueDescription => CalculationType.GetValueText(Value);
 
         public StatModifier(StatType statType, StatCalculationType calculationType, float value, Object source)
         {
