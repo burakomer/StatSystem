@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Sirenix.OdinInspector;
@@ -6,13 +5,6 @@ using UnityEngine;
 
 namespace PandaEngine.StatSystem
 {
-    [Serializable]
-    public struct StatSettings
-    {
-        public StatType statType;
-        public float initialBaseValue;
-    }
-
     public class StatsController : MonoBehaviour
     {
         [Header("References")]
@@ -28,7 +20,7 @@ namespace PandaEngine.StatSystem
 
         private void Awake()
         {
-            stats = statsSettings.ConvertAll(Stat.FromSettings);
+            stats = statsSettings.ConvertAll(settings => Stat.FromSettings(settings));
         }
 
         #endregion
@@ -72,10 +64,22 @@ namespace PandaEngine.StatSystem
 
         #endregion
 
-        #region DATA METHODS
+        #region STAT METHODS
 
         public Stat GetStat(string statId) => GetStat(statsSettings.Find(stat => stat.statType.Id == statId).statType);
         public Stat GetStat(StatType statType) => stats.Find(stat => stat.StatType == statType);
+
+        public void AddOrUpdateStat(IStatSettings settings)
+        {
+            var stat = GetStat(settings.StatType);
+            if (stat != null)
+            {
+                stat.SetBaseValue(settings.InitialBaseValue);
+                return;
+            }
+
+            stats.Add(Stat.FromSettings(settings));
+        }
 
         #endregion
 
