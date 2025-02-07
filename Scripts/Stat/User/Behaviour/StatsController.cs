@@ -16,6 +16,12 @@ namespace PandaEngine.StatSystem
 
         [SerializeField] [ReadOnly] private List<Stat> stats;
 
+        #region PUBLIC PROPERTIES
+
+        public IReadOnlyList<Stat> Stats => stats;
+
+        #endregion
+
         #region UNITY METHODS
 
         private void Awake()

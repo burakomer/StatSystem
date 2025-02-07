@@ -9,6 +9,6 @@ namespace PandaEngine.StatSystem
         [SerializeField] private string displayName;
 
         public string Id => id;
-        public string DisplayName => displayName;
+        public string DisplayName => !string.IsNullOrEmpty(displayName) ? displayName : id;
     }
 }
