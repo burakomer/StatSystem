@@ -69,6 +69,11 @@ namespace PandaEngine.StatSystem
             statModifiers = new List<StatModifier>();
         }
 
+        public Stat(float baseValue) : this()
+        {
+            this.baseValue = baseValue;
+        }
+
         public Stat(StatType statType) : this()
         {
             this.statType = statType;

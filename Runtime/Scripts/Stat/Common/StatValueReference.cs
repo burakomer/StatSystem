@@ -69,5 +69,21 @@ namespace PandaEngine.StatSystem
             statsController = null;
             statType = null;
         }
+
+        public StatValueReference(Stat stat)
+        {
+            statReferenceType = StatReferenceType.LocalStat;
+            localStat = stat;
+            statsController = null;
+            statType = null;
+        }
+
+        public StatValueReference(StatsController controller, StatType type)
+        {
+            statReferenceType = StatReferenceType.StatsController;
+            localStat = null;
+            statsController = controller;
+            statType = type;
+        }
     }
 }
